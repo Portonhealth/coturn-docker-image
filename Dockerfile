@@ -56,15 +56,16 @@ RUN apk update \
  && mkdir -p /usr/share/licenses/coturn/ \
  && cp /tmp/coturn/docs/LICENSE /usr/share/licenses/coturn/ \
  # Remove default config file.
- && rm -f /etc/coturn/turnserver.conf.default \
+ && mv -f /etc/coturn/turnserver.conf.default /etc/coturn/bk-jimmy \
     \
  # Cleanup unnecessary stuff.
  && apk del .tool-deps .build-deps \
  && rm -rf /var/cache/apk/* \
            /tmp/*
 
-
 COPY rootfs /
+
+COPY turnserver.conf /etc/coturn/
 
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
              /usr/local/bin/detect-external-ip.sh \
@@ -78,4 +79,6 @@ VOLUME ["/var/lib/coturn"]
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["--log-file=stdout", "--external-ip=$(detect-external-ip)"]
+# CMD ["--log-file=stdout", "--external-ip=$(detect-external-ip)"]
+
+CMD ["--log-file=/var/log/porton-turn.log", "--external-ip=$(detect-external-ip)", "--min-port=49160", "--max-port=49200"]
