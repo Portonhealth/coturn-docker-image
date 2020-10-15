@@ -81,4 +81,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 # CMD ["--log-file=stdout", "--external-ip=$(detect-external-ip)"]
 
-CMD ["--log-file=/var/log/porton-turn.log", "--external-ip=$(detect-external-ip)", "--min-port=49160", "--max-port=49200"]
+CMD ["--log-file=stdout", "--external-ip=$(detect-external-ip)", "--min-port=49160", "--max-port=49200"]
