@@ -2,3 +2,4 @@
 
 !rootfs/
 !turnserver.conf
+!health-check

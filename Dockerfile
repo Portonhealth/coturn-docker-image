@@ -73,12 +73,20 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
           /usr/local/bin/detect-external-ip
 
 
-EXPOSE 3478 3478/udp 
+EXPOSE 3478 3478/udp 3000
 
 VOLUME ["/var/lib/coturn"]
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+# start nodejs health-check app
+RUN mkdir /var/lib/health-check
+COPY health-check /var/lib/health-check
 
-# CMD ["--log-file=stdout", "--external-ip=$(detect-external-ip)"]
+# install nodejs
+RUN apk add nodejs
 
-CMD ["--log-file=stdout", "--external-ip=$(detect-external-ip)", "--min-port=49160", "--max-port=49200"]
+CMD ["docker-entrypoint.sh", "--log-file=stdout", "--external-ip=$(detect-external-ip)", "--min-port=49160", "--max-port=49200"]
+
+
+
+
+
